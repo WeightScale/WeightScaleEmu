@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+        >
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:orientation="vertical">
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:weightSum="1">
+            <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageButton_led"
+                    android:background="@mipmap/circle_green"
+                    android:layout_marginLeft="10dp"/>
+            <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spinnerVersions"
+                    android:spinnerMode="dialog" android:layout_weight="1"/>
+            <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/button_on"
+                    android:singleLine="false"
+                    android:background="@mipmap/endturn"
+                    android:layout_marginRight="10dp"/>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:id="@+id/linearLayoutScales"
+                android:visibility="visible"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true" android:layout_alignParentLeft="true"
+                android:layout_below="@+id/spinnerVersions">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/battery"
+                    android:id="@+id/textView" android:layout_marginLeft="10dp" android:layout_marginTop="10dp"/>
+            <SeekBar
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/seekBar_battery"
+                    android:max="1024" android:layout_marginTop="10dp" android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/tenzo_sensor"
+                    android:id="@+id/textView2" android:layout_marginLeft="10dp" android:layout_marginTop="10dp"/>
+            <SeekBar
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/seekBar_sensor"
+                    android:max="16777215"
+                    android:layout_marginTop="10dp" android:layout_marginLeft="10dp" android:layout_marginRight="10dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/temperature"
+                    android:id="@+id/textView3" android:layout_marginLeft="10dp" android:layout_marginTop="10dp"/>
+            <SeekBar
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/seekBar_temp" android:max="16777215" android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp" android:layout_marginRight="10dp"/>
+            <ScrollView
+                    android:layout_width="fill_parent"
+                    android:layout_height="122dp"
+                    android:layout_weight="2" android:background="@drawable/round_rectangle_w" android:paddingLeft="1dp"
+                    android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:layout_marginTop="10dp"
+                    >
+                <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textLog" android:maxLines="100" android:minLines="3"
+                        android:textColor="@android:color/black"/>
+            </ScrollView>
+            <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/visible"
+                    android:id="@+id/button_discoverable"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp" android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp" android:layout_marginBottom="10dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+

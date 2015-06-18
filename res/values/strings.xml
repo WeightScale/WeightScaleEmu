@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WeightScaleEmu</string>
+
+    <string name="bluetooth_on">Bluetooth включен</string>
+    <string name="bluetooth_turning_on">Bluetooth включается</string>
+    <string name="bluetooth_off">Bluetooth выключен</string>
+    <string name="bluetooth_no">Устройство не поддерживает Bluetooth</string>
+    <string name="bluetooth_connected">Bluetooth соеденено</string>
+    <string name="bluetooth_disconnected">Bluetooth разьеденено</string>
+    <string name="on_off">On/Off</string>
+    <string name="visible">Видимость для сопряжения</string>
+    <string name="battery">Батарея</string>
+    <string name="tenzo_sensor">Датчик</string>
+    <string name="temperature">Температура</string>
+</resources>

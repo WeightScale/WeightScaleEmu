@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WeightScaleEmu</string>
+
+    <string name="bluetooth_on">Bluetooth on</string>
+    <string name="bluetooth_turning_on">Bluetooth is turned on</string>
+    <string name="bluetooth_off">Bluetooth off</string>
+    <string name="bluetooth_no">The device does not support bluetooth</string>
+    <string name="bluetooth_connected">Bluetooth connect</string>
+    <string name="bluetooth_disconnected">Bluetooth disconnect</string>
+    <string name="on_off">On/Off</string>
+    <string name="visible">Visible for pairing</string>
+    <string name="battery">Battery</string>
+    <string name="tenzo_sensor">Tenzo sensor</string>
+    <string name="temperature">Temperature</string>
+</resources>
