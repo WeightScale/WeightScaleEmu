@@ -4,6 +4,7 @@
     <file url="file://$PROJECT_DIR$/res/layout/type_spinner.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/res/layout/type_spinner_dropdown_item.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/com/example/weight_scale_emu/Scale.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/com/example/weight_scale_emu/Versions.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/com/example/weight_scale_emu/crane/CraneScale.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/com/example/weight_scale_emu/crane/V1.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/com/example/weight_scale_emu/truck/TruckScale.java" charset="UTF-8" />

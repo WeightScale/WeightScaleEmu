@@ -32,12 +32,18 @@ public class MainActivity extends Activity {
     private Vibrator vibrator; //вибратор
     private Versions version;
 
+    /** Дельта -40С и 100С */
+    private int DELTA_SENSOR_TEMPERATURE = 812965;
+    /** Показания датчика температуры -40С */
+    private int MIN_SENSOR_TEMPERATURE = 9741613;
     private boolean flag_connect = false;
+    private boolean flag_run = false;
+    /** Контейнер версий весов */
     Map<String,Versions> mapVersions = new HashMap<>();
     {
-        mapVersions.put("WeightScale1",new com.example.weight_scale_emu.truck.V1());
-        mapVersions.put("WeightScale4",new com.example.weight_scale_emu.truck.V4());
-        mapVersions.put("CraneScale1",new com.example.weight_scale_emu.crane.V1());
+        mapVersions.put("WeightScale1",new com.example.weight_scale_emu.truck.V1(this));
+        mapVersions.put("WeightScale4",new com.example.weight_scale_emu.truck.V4(this));
+        mapVersions.put("CraneScale1",new com.example.weight_scale_emu.crane.V1(this));
     }
 
     /**
@@ -73,15 +79,17 @@ public class MainActivity extends Activity {
                 case MotionEvent.ACTION_DOWN:
                     //imageButtonLed.setBackgroundColor(getResources().getColor(R.color.color_scales));
                     imageButtonLed.setBackgroundDrawable(getResources().getDrawable(R.mipmap.circle_green));
-                    timerScalesOn.onStart();
+                    imageButtonLed.setVisibility(ImageButton.VISIBLE);
+                    if(flag_run)
+                        timerScalesOn.onStart();
                     break;
                 case MotionEvent.ACTION_UP:
                     timerScalesOn.cancel();
-                    if (!timerScalesOn.isFinish()) {
+                    //if (!timerScalesOn.isFinish()) {
                         buttonOn.setOnTouchListener(OnTouchListenerOff);
                         runScales();
-                    }
-                    imageButtonLed.setVisibility(ImageButton.VISIBLE);
+                    //}
+
                     break;
                 default:
             }
@@ -248,6 +256,7 @@ public class MainActivity extends Activity {
     }
 
     void runScales() {
+        flag_run = true;
         imageButtonLed.setBackgroundDrawable(getResources().getDrawable(R.mipmap.circle_green));
         //imageButtonLed.setVisibility(ImageButton.VISIBLE);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -327,15 +336,18 @@ public class MainActivity extends Activity {
             }
         });
         SeekBar seekBarBattery = (SeekBar) findViewById(R.id.seekBar_battery);
+        Scale.sensor_battery = new Preferences(getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).read(Preferences.KEY_SENSOR_BAT, 0);
+        seekBarBattery.setProgress(Scale.sensor_battery);
         seekBarBattery.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                scale.setSensorBattery(progress);
-                int max = new Preferences(getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).read(Preferences.KEY_MAX_ADC_BAT, scale.max_adc_bat);
-                int min = new Preferences(getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).read(Preferences.KEY_MIN_ADC_BAT, scale.min_adc_bat);
-                float step = ((float) max - (float) min) / 1024;
-                int value = (int) ((float) progress * step);
-                scale.setBattery(value + min);
+                Scale.setSensorBattery(progress);
+                new Preferences(getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).write(Preferences.KEY_SENSOR_BAT, progress);
+                //int max = new Preferences(getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).read(Preferences.KEY_MAX_ADC_BAT, Scale.max_adc_bat);
+                //int min = new Preferences(getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).read(Preferences.KEY_MIN_ADC_BAT, Scale.min_adc_bat);
+                //float step = ((float) max - (float) min) / 1024;
+                //int value = (int) ((float) progress * step);
+                //Scale.setBattery(value + min);
             }
 
             @Override
@@ -351,10 +363,13 @@ public class MainActivity extends Activity {
         });
 
         SeekBar seekBarSensor = (SeekBar) findViewById(R.id.seekBar_sensor);
+        Scale.sensor_tenzo = new Preferences(getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).read(Preferences.KEY_SENSOR_TENZO, 0);
+        seekBarSensor.setProgress(Scale.sensor_tenzo);
         seekBarSensor.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                scale.setSensorTenzo(progress);
+                Scale.setSensorTenzo(progress);
+                new Preferences(getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).write(Preferences.KEY_SENSOR_TENZO, progress);
             }
 
             @Override
@@ -369,10 +384,14 @@ public class MainActivity extends Activity {
         });
 
         SeekBar seekBarTemp = (SeekBar) findViewById(R.id.seekBar_temp);
+        seekBarTemp.setMax(DELTA_SENSOR_TEMPERATURE);
+        Scale.setSensorTemp(MIN_SENSOR_TEMPERATURE + new Preferences(getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).read(Preferences.KEY_SENSOR_TEMP, 0));
+        seekBarTemp.setProgress(new Preferences(getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).read(Preferences.KEY_SENSOR_TEMP, 0));
         seekBarTemp.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                scale.setSensorTemp(progress);
+                Scale.setSensorTemp(MIN_SENSOR_TEMPERATURE + progress);
+                new Preferences(getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).write(Preferences.KEY_SENSOR_TEMP, progress);
             }
 
             @Override
@@ -391,7 +410,7 @@ public class MainActivity extends Activity {
 
         linearLayoutScales.setVisibility(LinearLayout.VISIBLE);
 
-        scale = new Scale(getApplicationContext(), bluetooth);
+        scale = new Scale(getApplicationContext(), bluetooth, version);
         scale.connect();
     }
 
@@ -409,6 +428,7 @@ public class MainActivity extends Activity {
         scale.cancelAcceptThread(false);
         scale.disconnect();
         bluetooth.disable();
+        flag_run = false;
     }
 
     void setupSpinner(){

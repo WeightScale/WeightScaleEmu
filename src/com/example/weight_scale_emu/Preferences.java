@@ -7,19 +7,23 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-class Preferences {
+public class Preferences {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
-    static final String PREF_EEPROM = "eeprom";
+    public static final String PREF_EEPROM = "eeprom";
 
     static final String KEY_MAX_ADC_BAT = "max_adc_bat";
     static final String KEY_MIN_ADC_BAT = "min_adc_bat";
     static final String KEY_CONST_BAT = "const_bat";
 
+    final static String KEY_SENSOR_TEMP = "sensor_temp";
+    final static String KEY_SENSOR_BAT = "sensor_bat";
+    final static String KEY_SENSOR_TENZO = "sensor_tenzo";
+
     //static boolean admin=false; //возможности админа
 
-    Preferences(SharedPreferences sp) {
+    public Preferences(SharedPreferences sp) {
         sharedPreferences = sp;
         editor = sp.edit();
         editor.commit();
@@ -31,19 +35,19 @@ class Preferences {
         editor.commit();
     }
 
-    void write(String key, String value) {
+    public void write(String key, String value) {
         if (key.isEmpty() || value.isEmpty())
             return;
         editor.putString(key, value);
         editor.commit();
     }
 
-    void write(String key, int value) {
+    public void write(String key, int value) {
         editor.putInt(key, value);
         editor.commit();
     }
 
-    void write(String key, float value) {
+    public void write(String key, float value) {
         editor.putFloat(key, value);
         editor.commit();
     }
@@ -53,7 +57,7 @@ class Preferences {
         editor.commit();
     }
 
-    String read(String key, String def) {
+    public String read(String key, String def) {
         return sharedPreferences.getString(key, def);
     }
 
@@ -61,7 +65,7 @@ class Preferences {
         return sharedPreferences.getBoolean(key, def);
     }
 
-    int read(String key, int in) {
+    public int read(String key, int in) {
         return sharedPreferences.getInt(key, in);
     }
 

@@ -71,7 +71,7 @@
             <SeekBar
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/seekBar_temp" android:max="16777215" android:layout_marginTop="10dp"
+                    android:id="@+id/seekBar_temp" android:max="812965" android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp" android:layout_marginRight="10dp"/>
             <ScrollView
                     android:layout_width="fill_parent"
