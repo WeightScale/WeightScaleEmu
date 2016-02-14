@@ -31,19 +31,25 @@ public class MainActivity extends Activity {
     private Spinner spinnerVersions;
     private Vibrator vibrator; //вибратор
     private Versions version;
-
-    /** Дельта -40С и 100С */
+    /**
+     * Дельта -40С и 100С
+     */
     private int DELTA_SENSOR_TEMPERATURE = 812965;
-    /** Показания датчика температуры -40С */
+    /**
+     * Показания датчика температуры -40С
+     */
     private int MIN_SENSOR_TEMPERATURE = 9741613;
     private boolean flag_connect = false;
     private boolean flag_run = false;
-    /** Контейнер версий весов */
-    Map<String,Versions> mapVersions = new HashMap<>();
+    /**
+     * Контейнер версий весов
+     */
+    Map<String, Versions> mapVersions = new HashMap<>();
+
     {
-        mapVersions.put("WeightScale1",new com.example.weight_scale_emu.truck.V1(this));
-        mapVersions.put("WeightScale4",new com.example.weight_scale_emu.truck.V4(this));
-        mapVersions.put("CraneScale1",new com.example.weight_scale_emu.crane.V1(this));
+        mapVersions.put("WeightScale1", new com.example.weight_scale_emu.truck.V1(this));
+        mapVersions.put("WeightScale4", new com.example.weight_scale_emu.truck.V4(this));
+        mapVersions.put("CraneScale1", new com.example.weight_scale_emu.crane.V1(this));
     }
 
     /**
@@ -57,11 +63,11 @@ public class MainActivity extends Activity {
         linearLayoutScales = (LinearLayout) findViewById(R.id.linearLayoutScales);
         linearLayoutScales.setVisibility(LinearLayout.GONE);
 
-        spinnerVersions = (Spinner)findViewById(R.id.spinnerVersions);
+        spinnerVersions = (Spinner) findViewById(R.id.spinnerVersions);
 
         buttonOn = (ImageButton) findViewById(R.id.button_on);
         imageButtonLed = (ImageButton) findViewById(R.id.imageButton_led);
-        imageButtonLed.setBackgroundDrawable(getResources().getDrawable(R.mipmap.circle_green));
+        imageButtonLed.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_action_led_on));
         imageButtonLed.setVisibility(ImageButton.INVISIBLE);
         buttonOn.setOnTouchListener(OnTouchListenerOn);
 
@@ -78,16 +84,16 @@ public class MainActivity extends Activity {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     //imageButtonLed.setBackgroundColor(getResources().getColor(R.color.color_scales));
-                    imageButtonLed.setBackgroundDrawable(getResources().getDrawable(R.mipmap.circle_green));
+                    imageButtonLed.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_action_led_on));
                     imageButtonLed.setVisibility(ImageButton.VISIBLE);
-                    if(flag_run)
+                    if (flag_run)
                         timerScalesOn.onStart();
                     break;
                 case MotionEvent.ACTION_UP:
                     timerScalesOn.cancel();
                     //if (!timerScalesOn.isFinish()) {
-                        buttonOn.setOnTouchListener(OnTouchListenerOff);
-                        runScales();
+                    buttonOn.setOnTouchListener(OnTouchListenerOff);
+                    runScales();
                     //}
 
                     break;
@@ -131,7 +137,7 @@ public class MainActivity extends Activity {
     }
 
     private final View.OnTouchListener OnTouchListenerOff = new View.OnTouchListener() {
-        final TimerScalesOff timerScalesOff = new TimerScalesOff(6000, 150);
+        final TimerScalesOff timerScalesOff = new TimerScalesOff(6000, 100);
 
         @TargetApi(Build.VERSION_CODES.HONEYCOMB)
         @Override
@@ -208,6 +214,15 @@ public class MainActivity extends Activity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        offScales();
+        super.onBackPressed();
+    }
+
+    /**
+     * Таймер задерщки выключения весов.
+     */
     public class TimerScalesOff extends CountDownTimer {
         private boolean start = false;
         private boolean finish = true;
@@ -248,6 +263,11 @@ public class MainActivity extends Activity {
 
     }
 
+    /**
+     * Переключатель состояния индикатора видемый не видемый..
+     *
+     * @param imageButton Индикатор.
+     */
     void toggle(ImageButton imageButton) {
         if (imageButton.isShown())
             imageButton.setVisibility(ImageButton.INVISIBLE);
@@ -255,9 +275,14 @@ public class MainActivity extends Activity {
             imageButton.setVisibility(ImageButton.VISIBLE);
     }
 
+    /**
+     * Запустить весы.
+     */
     void runScales() {
         flag_run = true;
-        imageButtonLed.setBackgroundDrawable(getResources().getDrawable(R.mipmap.circle_green));
+        //spinnerVersions.setVisibility(Spinner.INVISIBLE);
+        spinnerVersions.setEnabled(false);
+        imageButtonLed.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_action_led_on));
         //imageButtonLed.setVisibility(ImageButton.VISIBLE);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         textViewLog = (TextView) findViewById(R.id.textLog);
@@ -414,24 +439,32 @@ public class MainActivity extends Activity {
         scale.connect();
     }
 
+    /**
+     * Выключить весы.
+     */
     void offScales() {
         linearLayoutScales.setVisibility(ImageButton.GONE);
         imageButtonLed.setVisibility(ImageButton.INVISIBLE);
         buttonOn.setOnTouchListener(OnTouchListenerOn);
 
-        if (bluetooth.isDiscovering())
-            bluetooth.cancelDiscovery();
-        unregisterReceiver(broadcastReceiver);
-        //mainThread.cancel(true);
-        //while (!mainThread.closed);
-        //test.interrupt();
-        scale.cancelAcceptThread(false);
-        scale.disconnect();
-        bluetooth.disable();
+        if (BluetoothAdapter.getDefaultAdapter().isDiscovering())
+            BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
+        if(broadcastReceiver != null)
+            unregisterReceiver(broadcastReceiver);
+        try {
+            scale.cancelAcceptThread(false);
+            scale.disconnect();
+        }catch (Exception e){}
+        BluetoothAdapter.getDefaultAdapter().disable();
         flag_run = false;
+        //spinnerVersions.setVisibility(Spinner.VISIBLE);
+        spinnerVersions.setEnabled(true);
     }
 
-    void setupSpinner(){
+    /**
+     * Установка спинера версий.
+     */
+    void setupSpinner() {
         Collection<Versions> collection = mapVersions.values();
         Versions[] array = collection.toArray(new Versions[collection.size()]);
         final ArrayAdapter<Versions> dataAdapter = new ArrayAdapter<Versions>(this, R.layout.type_spinner, array);

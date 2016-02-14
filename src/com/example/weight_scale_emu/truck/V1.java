@@ -6,12 +6,16 @@ import android.content.Context;
  * Created by Kostya on 18.06.2015.
  */
 public class V1 extends TruckScale {
-    /** Имя версии */
+    /**
+     * Имя версии
+     */
     final static String TAG = "1";
 
-    public V1(Context context) {    super(context);  }
+    public V1(Context context) {
+        super(context);
+    }
 
-    public String toString(){
+    public String toString() {
         return TruckScale.TAG + TAG;
     }
 

@@ -3,47 +3,83 @@
               android:orientation="horizontal"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-        >
+              android:background="@color/white">
     <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" android:orientation="vertical">
+            android:layout_height="fill_parent" android:orientation="vertical"
+    >
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:weightSum="1">
-            <ImageButton
+                android:layout_height="wrap_content" android:weightSum="1"
+                android:gravity="center_vertical"
+                android:baselineAligned="false">
+
+            <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageButton_led"
+                        android:background="@drawable/ic_action_led_on"
+                        android:layout_gravity="center"
+                        android:layout_margin="20dp"/>
+            </FrameLayout>
+
+            <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                <Spinner
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spinnerVersions"
+                        android:spinnerMode="dialog"
+                        android:layout_gravity="left|center"/>
+            </FrameLayout>
+
+            <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageButton_led"
-                    android:background="@mipmap/circle_green"
-                    android:layout_marginLeft="10dp"/>
-            <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/spinnerVersions"
-                    android:spinnerMode="dialog" android:layout_weight="1"/>
-            <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/button_on"
-                    android:singleLine="false"
-                    android:background="@mipmap/endturn"
-                    android:layout_marginRight="10dp"/>
+            >
+
+                <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/button_on"
+                        android:singleLine="false"
+                        android:background="@drawable/ic_action_shutdown_l"
+                        android:layout_gravity="center"
+                        android:layout_margin="20dp"/>
+            </FrameLayout>
+
         </LinearLayout>
         <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:id="@+id/linearLayoutScales"
+                android:layout_height="fill_parent" android:id="@+id/linearLayoutScales"
                 android:visibility="visible"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true" android:layout_alignParentLeft="true"
-                android:layout_below="@+id/spinnerVersions">
+        >
+
+            <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/visible"
+                    android:id="@+id/button_discoverable"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp" android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp" android:layout_marginBottom="10dp"/>
+
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/battery"
-                    android:id="@+id/textView" android:layout_marginLeft="10dp" android:layout_marginTop="10dp"/>
+                    android:id="@+id/textView" android:layout_marginLeft="10dp" android:layout_marginTop="10dp"
+                    android:textColor="@android:color/black"/>
             <SeekBar
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -55,7 +91,8 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/tenzo_sensor"
-                    android:id="@+id/textView2" android:layout_marginLeft="10dp" android:layout_marginTop="10dp"/>
+                    android:id="@+id/textView2" android:layout_marginLeft="10dp" android:layout_marginTop="10dp"
+                    android:textColor="@android:color/black"/>
             <SeekBar
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -67,7 +104,8 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/temperature"
-                    android:id="@+id/textView3" android:layout_marginLeft="10dp" android:layout_marginTop="10dp"/>
+                    android:id="@+id/textView3" android:layout_marginLeft="10dp" android:layout_marginTop="10dp"
+                    android:textColor="@android:color/black"/>
             <SeekBar
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -75,8 +113,9 @@
                     android:layout_marginLeft="10dp" android:layout_marginRight="10dp"/>
             <ScrollView
                     android:layout_width="fill_parent"
-                    android:layout_height="122dp"
-                    android:layout_weight="2" android:background="@drawable/round_rectangle_w" android:paddingLeft="1dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:paddingLeft="1dp"
                     android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:layout_marginTop="10dp"
                     >
                 <TextView
@@ -85,14 +124,6 @@
                         android:id="@+id/textLog" android:maxLines="100" android:minLines="3"
                         android:textColor="@android:color/black"/>
             </ScrollView>
-            <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/visible"
-                    android:id="@+id/button_discoverable"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp" android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp" android:layout_marginBottom="10dp"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

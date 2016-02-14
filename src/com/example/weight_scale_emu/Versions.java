@@ -15,10 +15,12 @@ public abstract class Versions implements InterfaceScale {
      * Контейнер команд.
      */
     public Map<String, CommandRunnable> commands = new HashMap<>();
+
     {
         commands.put(STR_DCH, new CommandRunnable() {
             @Override
-            public void run(String value) {}
+            public void run(String value) {
+            }
 
             @Override
             public void run() {
@@ -78,24 +80,30 @@ public abstract class Versions implements InterfaceScale {
         });
     }
 
-    protected Versions(Context context){  mContext = context;   }
+    protected Versions(Context context) {
+        mContext = context;
+    }
 
-    /** Устававливает интерфейс отправителя команд.
+    /**
+     * Устававливает интерфейс отправителя команд.
+     *
      * @param i Интерфейс.
      */
-    public void setInterfaceSender(Scale.InterfaceSender i){
+    public void setInterfaceSender(Scale.InterfaceSender i) {
         sender = i;
     }
 
-    /** Выполнить команду.
+    /**
+     * Выполнить команду.
+     *
      * @param cmd Команда.
      */
     public void execute(String cmd) {
         StringBuilder str = new StringBuilder(cmd);
-        if(commands.containsKey(str.substring(0,3))){
-            CommandRunnable command = commands.get(str.substring(0,3));
-            String value = str.replace(0, 3,"").toString();
-            if(value.isEmpty())
+        if (commands.containsKey(str.substring(0, 3))) {
+            CommandRunnable command = commands.get(str.substring(0, 3));
+            String value = str.replace(0, 3, "").toString();
+            if (value.isEmpty())
                 command.run();
             else
                 command.run(value);

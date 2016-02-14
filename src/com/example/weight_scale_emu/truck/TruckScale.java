@@ -30,7 +30,8 @@ public abstract class TruckScale extends Versions {
                         filter = 15;
                     new Preferences(mContext.getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).write(STR_FAD, filter);
                     sender.send(STR_FAD);
-                }catch (Exception e){}
+                } catch (Exception e) {
+                }
             }
         });
         commands.put(STR_TOF, new CommandRunnable() {
@@ -46,7 +47,8 @@ public abstract class TruckScale extends Versions {
                     new Preferences(mContext.getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).write(STR_TOF, time);
                     Scale.pwr_time = time;
                     sender.send(STR_TOF);
-                }catch (Exception e){}
+                } catch (Exception e) {
+                }
             }
         });
         commands.put(STR_DAT, new CommandRunnable() {
@@ -63,7 +65,8 @@ public abstract class TruckScale extends Versions {
         });
         commands.put(STR_GBT, new CommandRunnable() {
             @Override
-            public void run(String value) { }
+            public void run(String value) {
+            }
 
             @Override
             public void run() {
@@ -100,6 +103,8 @@ public abstract class TruckScale extends Versions {
         });
     }
 
-    TruckScale(Context context) { super(context); }
+    TruckScale(Context context) {
+        super(context);
+    }
 
 }

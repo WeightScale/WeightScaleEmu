@@ -9,5 +9,7 @@ import com.example.weight_scale_emu.Versions;
 public abstract class CraneScale extends Versions {
     final static String TAG = "CraneScale";
 
-    protected CraneScale(Context context) {  super(context); }
+    protected CraneScale(Context context) {
+        super(context);
+    }
 }

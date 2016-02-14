@@ -2,7 +2,8 @@
 <resources>
     <color name="transparent">#00000000</color>
     <color name="background">#ffb0b0b0</color>
-    <!--<color name="background">#ff0ea2ba</color>-->
+    <color name="background1">#ff898989</color>
+    <color name="background2">#ff4e4e4e</color>
     <color name="text">#000000</color>
     <color name="main">#8080ff</color>
     <color name="normal">#00ff00</color>

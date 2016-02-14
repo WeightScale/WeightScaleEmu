@@ -57,7 +57,7 @@ public class Scale {
         //ushellTask = new UshellTask(context, this, interfaceScale);
     }
 
-    public interface InterfaceSender{
+    public interface InterfaceSender {
         void send(String cmd);
     }
 
@@ -66,7 +66,7 @@ public class Scale {
         acceptThread.execute();
     }
 
-    public void sendCommand(String cmd){
+    public void sendCommand(String cmd) {
         send(cmd + CR_LF);
     }
 
@@ -166,7 +166,9 @@ public class Scale {
 
     }
 
-    /** Построитель команды
+    /**
+     * Построитель команды
+     *
      * @param b байт команды
      */
     private synchronized void buildCommand(byte b) {
@@ -174,12 +176,12 @@ public class Scale {
         switch (b) {
             case CR:
                 //command.append((byte)0);//Add NULL char
-            break;
+                break;
             case LF:
                 String str = new String(command.toByteArray());
                 parseCommand(str);
                 command.clear();
-            break;
+                break;
             default:
                 command.append(b);
                 break;
@@ -204,11 +206,13 @@ public class Scale {
         sensor_temp = temp;
     }
 
-    private void parseCommand(String cmd){
+    private void parseCommand(String cmd) {
         version.execute(cmd);
     }
 
-    /** Интерфейс для отправки комманд */
+    /**
+     * Интерфейс для отправки комманд
+     */
     private InterfaceSender interfaceSender = new InterfaceSender() {
         @Override
         public void send(String cmd) {
@@ -216,7 +220,9 @@ public class Scale {
         }
     };
 
-    /** Автоматическая каллибровка батареи
+    /**
+     * Автоматическая каллибровка батареи
+     *
      * @param adc Значение АЦП батареи
      */
     public static void autoCalibrationBattery(int adc) {
@@ -232,7 +238,9 @@ public class Scale {
         }
     }
 
-    /** Расчет заряда батареи
+    /**
+     * Расчет заряда батареи
+     *
      * @param adc Значение АЦП батареи.
      * @return Значение в процентах заряд батареи.
      */
@@ -246,7 +254,7 @@ public class Scale {
     }
 
     /**
-     *  Установить офсет датчика веса.
+     * Установить офсет датчика веса.
      */
     public static void setOffset() {
         int i;

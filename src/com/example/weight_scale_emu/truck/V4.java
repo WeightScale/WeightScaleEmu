@@ -11,10 +11,14 @@ import java.util.Map;
  * Created by Kostya on 18.06.2015.
  */
 public class V4 extends TruckScale {
-    /** Номер версии */
+    /**
+     * Номер версии
+     */
     final static String TAG = "4";
 
-    public V4(Context context) {  super(context);  }
+    public V4(Context context) {
+        super(context);
+    }
 
     {
         commands.put(STR_VRS, new CommandRunnable() {
@@ -24,16 +28,18 @@ public class V4 extends TruckScale {
             }
 
             @Override
-            public void run(String value) {}
+            public void run(String value) {
+            }
         });
         commands.put(STR_GCO, new CommandRunnable() {
             @Override
             public void run() {
-                sender.send(STR_GCO+Scale.adc_offset);
+                sender.send(STR_GCO + Scale.adc_offset);
             }
 
             @Override
-            public void run(String value) { }
+            public void run(String value) {
+            }
         });
         commands.put(STR_SGD, new CommandRunnable() {
             @Override
@@ -108,9 +114,13 @@ public class V4 extends TruckScale {
         });
     }
 
-    /** Имя версии в текстовом виде.
+    /**
+     * Имя версии в текстовом виде.
+     *
      * @return Версия в текстовом виде.
      */
-    public String toString(){ return TruckScale.TAG + TAG; }
+    public String toString() {
+        return TruckScale.TAG + TAG;
+    }
 
 }
