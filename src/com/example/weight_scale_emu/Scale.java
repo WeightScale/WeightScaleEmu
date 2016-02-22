@@ -141,7 +141,7 @@ public class Scale {
         protected void onPostExecute(Boolean b) {
             super.onPostExecute(b);
             if (b)
-                context.sendBroadcast(new Intent("connectSocket"));
+                context.sendBroadcast(new Intent(MainActivity.CONNECT_SOCKET));
         }
 
         public void write(String bytes) {

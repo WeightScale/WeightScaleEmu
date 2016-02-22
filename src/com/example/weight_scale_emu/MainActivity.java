@@ -27,7 +27,7 @@ public class MainActivity extends Activity {
     private ImageButton buttonOn;
     private ImageButton imageButtonLed;
     private LinearLayout linearLayoutScales;
-    private TextView textViewLog;
+    private TextView textViewLog, textViewBattery, textViewTemperature, textViewSensor;
     private Spinner spinnerVersions;
     private Vibrator vibrator; //вибратор
     private Versions version;
@@ -41,6 +41,7 @@ public class MainActivity extends Activity {
     private int MIN_SENSOR_TEMPERATURE = 9741613;
     private boolean flag_connect = false;
     private boolean flag_run = false;
+    protected final static String CONNECT_SOCKET = "com.example.weight_scale_emu.CONNECT_SOCKET";
     /**
      * Контейнер версий весов
      */
@@ -286,6 +287,9 @@ public class MainActivity extends Activity {
         //imageButtonLed.setVisibility(ImageButton.VISIBLE);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         textViewLog = (TextView) findViewById(R.id.textLog);
+        textViewBattery = (TextView)findViewById(R.id.textViewBattery);
+        textViewSensor = (TextView)findViewById(R.id.textViewSensor);
+        textViewTemperature = (TextView)findViewById(R.id.textViewTemperature);
 
         broadcastReceiver = new BroadcastReceiver() {
 
@@ -315,7 +319,7 @@ public class MainActivity extends Activity {
                         vibrator.vibrate(200);
                         flag_connect = true;
                         log(R.string.bluetooth_connected);
-                    } else if (action.equals("connectSocket")) {
+                    } else if (action.equals(CONNECT_SOCKET)) {
                         scale.connect();
                     }
                 }
@@ -328,7 +332,7 @@ public class MainActivity extends Activity {
         intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         intentFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
         intentFilter.addAction("android.intent.extra.MEDIA_BUTTON");
-        intentFilter.addAction("connectSocket");
+        intentFilter.addAction(CONNECT_SOCKET);
         registerReceiver(broadcastReceiver, intentFilter);
 
         bluetooth = BluetoothAdapter.getDefaultAdapter();
@@ -362,12 +366,15 @@ public class MainActivity extends Activity {
         });
         SeekBar seekBarBattery = (SeekBar) findViewById(R.id.seekBar_battery);
         Scale.sensor_battery = new Preferences(getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).read(Preferences.KEY_SENSOR_BAT, 0);
+        textViewBattery.setText(Scale.sensor_battery + " bit");
         seekBarBattery.setProgress(Scale.sensor_battery);
         seekBarBattery.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                textViewBattery.setText(progress + " bit");
                 Scale.setSensorBattery(progress);
                 new Preferences(getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).write(Preferences.KEY_SENSOR_BAT, progress);
+
                 //int max = new Preferences(getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).read(Preferences.KEY_MAX_ADC_BAT, Scale.max_adc_bat);
                 //int min = new Preferences(getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).read(Preferences.KEY_MIN_ADC_BAT, Scale.min_adc_bat);
                 //float step = ((float) max - (float) min) / 1024;
@@ -393,6 +400,7 @@ public class MainActivity extends Activity {
         seekBarSensor.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                textViewSensor.setText(progress + " bit");
                 Scale.setSensorTenzo(progress);
                 new Preferences(getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).write(Preferences.KEY_SENSOR_TENZO, progress);
             }
@@ -411,11 +419,13 @@ public class MainActivity extends Activity {
         SeekBar seekBarTemp = (SeekBar) findViewById(R.id.seekBar_temp);
         seekBarTemp.setMax(DELTA_SENSOR_TEMPERATURE);
         Scale.setSensorTemp(MIN_SENSOR_TEMPERATURE + new Preferences(getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).read(Preferences.KEY_SENSOR_TEMP, 0));
+        textViewTemperature.setText(Scale.sensor_temp + " bit");
         seekBarTemp.setProgress(new Preferences(getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).read(Preferences.KEY_SENSOR_TEMP, 0));
         seekBarTemp.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 Scale.setSensorTemp(MIN_SENSOR_TEMPERATURE + progress);
+                textViewTemperature.setText(Scale.sensor_temp + " bit");
                 new Preferences(getSharedPreferences(Preferences.PREF_EEPROM, Context.MODE_PRIVATE)).write(Preferences.KEY_SENSOR_TEMP, progress);
             }
 
